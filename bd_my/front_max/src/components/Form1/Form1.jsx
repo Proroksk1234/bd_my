@@ -6,10 +6,11 @@ import axios from "axios";
 export const Form1 = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [cost, setCost] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = { object_type: name };
+    const data = { type_of_insurance: name, cost: Number(cost) };
     axios
       .post("http://localhost:8000/api/post_types_of_insurance", data)
       .then((response) => {
@@ -36,6 +37,12 @@ export const Form1 = () => {
             placeholder="название"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            className="input"
+            placeholder="цена"
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
           />
           <button className="form-button">Создать</button>
         </form>

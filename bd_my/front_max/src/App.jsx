@@ -30,7 +30,7 @@ function App() {
         <Route path="/forms" element={<Forms />} />
         <Route path="/reports" element={<Reposts />} />
         <Route path="/forms/types-of-insurance" element={<Form1 />} />
-        <Route path="/forms/objects-of-insurance" element={<Form2 />} />
+        <Route path="/forms/objects_of_insurance" element={<Form2 />} />
         <Route path="/forms/clients" element={<Form3 />} />
         <Route path="/forms/agents" element={<Form4 />} />
         <Route path="/forms/insurance-activity" element={<Form5 />} />
@@ -44,7 +44,10 @@ function App() {
         <Route path="/tables/clients" element={<Table3 />} />
         <Route path="/tables/agents" element={<Table4 />} />
         <Route path="/tables/insurance-activity" element={<Table5 />} />
-        <Route path="/tables/payments-under-the-contract" element={<Table6 />} />
+        <Route
+          path="/tables/payments-under-the-contract"
+          element={<Table6 />}
+        />
       </Routes>
     </div>
   );

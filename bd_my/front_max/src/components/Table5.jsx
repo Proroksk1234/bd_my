@@ -46,16 +46,16 @@ export const Table5 = () => {
   };
   const updateObj = (id, updatedElement) => {
     const date = updatedElement.date.split("T")[0];
-    const {contract_number,summ_activity}=updatedElement
+    const { contract_number, summ_activity } = updatedElement;
     const data = {
-      client_id:setSelectedObjectType,
-      agent_id: setSelectedBuyerType,
-      objects_of_insurance_id: setSelectedSalesmanType,
-      contract_number,
-      summ_activity,
+      client_id: selectedObjectType,
+      agent_id: selectedBuyerType,
+      objects_of_insurance_id: selectedSalesmanType,
+      contract_number: Number(contract_number),
+      summ_activity: Number(summ_activity),
       date,
     };
-    console.log(setSelectedObjectType, setSelectedBuyerType, setSelectedSalesmanType)
+    console.log(data);
     axios
       .put(`http://localhost:8000/api/update_insurance_activity/${id}`, data)
       .then((response) => {
@@ -98,15 +98,15 @@ export const Table5 = () => {
         const selectedSalesmanLabel = selectedSalesman
           ? selectedSalesman.label
           : "";
+        const objObjectId = [{ obj_type_id: selectedObjectLabel }];
         const objBuyerId = [{ people_type_id: selectedBuyerLabel }];
         const objSalesmanId = [{ people_type_id: selectedSalesmanLabel }];
 
+        editedElement.real_estate_object_id = objObjectId;
+        editedElement.buyer_id = objBuyerId;
+        editedElement.salesman_id = objSalesmanId;
 
-editedElement.client_id = [{ people_type_id: selectedObjectType }];
-editedElement.agent_id = [{ people_type_id: selectedBuyerType }];
-editedElement.objects_of_insurance_id = [{ object_type: selectedSalesmanType }];
-
-        const objObjectId = [{ object_type: selectedObjectLabel }];
+        updateObj(editedElement.id, editedElement);
 
         updateObj(editedElement.id, editedElement);
       }
@@ -189,7 +189,7 @@ editedElement.objects_of_insurance_id = [{ object_type: selectedSalesmanType }];
                 <>{`${element.objects_of_insurance_id[0].name_object} ${element.objects_of_insurance_id[0].type_of_insurance_id[0].type_of_insurance}`}</>
               )}
             </div>
-         )}
+          )}
         </td>
         <td>
           {isEditing ? (
@@ -244,12 +244,12 @@ editedElement.objects_of_insurance_id = [{ object_type: selectedSalesmanType }];
       });
   };
   const getSelect2 = () => {
-     axios
+    axios
       .get("http://localhost:8000/api/get_all_clients")
       .then((response) => {
         const res = response.data.map((e) => ({
           value: e.id,
-        label: `${e.name} ${e.surname}`,
+          label: `${e.name} ${e.surname}`,
         }));
         setSelect2(res);
       })
