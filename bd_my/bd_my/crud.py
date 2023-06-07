@@ -117,8 +117,8 @@ async def crud_post_peoples_db(data: dict, db, type_people_id):
 
 async def crud_post_insurance_activity(data: dict, db):
     for key, value in data.items():
-        if isinstance(value, datetime):
-            data[key] = value.isoformat()
+        if key == 'date':
+            data[key] = datetime.strptime(value, '%Y-%m-%d').date()
     fields = ','.join(data.keys())
     placeholders = ','.join(f':{key}' for key in data.keys())
     query_text = text(f"INSERT INTO insurance_activity ({fields}) VALUES ({placeholders})")
@@ -307,11 +307,11 @@ async def select_objects_sum(db, insurance_sum):
 async def select_dynamic_imprisonment(db):
     query = text("""
         SELECT types_of_insurance.type_of_insurance, COUNT(insurance_activity.id) AS contracts_count, 
-        EXTRACT(YEAR_MONTH FROM insurance_activity.date) AS year_month
-        FROM insurance_activity AS insurance_activity
-        JOIN objects_of_insurance AS objects_of_insurance ON 
+        TO_CHAR(insurance_activity.date, 'YYYY-MM') AS year_month
+        FROM insurance_activity
+        JOIN objects_of_insurance ON 
         insurance_activity.objects_of_insurance_id = objects_of_insurance.id
-        JOIN types_of_insurance AS types_of_insurance ON 
+        JOIN types_of_insurance ON 
         objects_of_insurance.type_of_insurance_id = types_of_insurance.id
         GROUP BY types_of_insurance.type_of_insurance, year_month
         ORDER BY year_month, types_of_insurance.type_of_insurance;
